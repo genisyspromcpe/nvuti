@@ -97,6 +97,7 @@ class AuthController extends Controller
                'email' => $r->email
             ]);
 
+            GameController::setHash($user);
             Auth::login($user, true);
 
             return response()->json(['success' => true]);
@@ -109,6 +110,7 @@ class AuthController extends Controller
 
         if (!$user) return response()->json(['error' => 'Пользователь не найден']);
 
+        GameController::setHash($user);
         Auth::login($user, true);
 
         return response()->json(['success' => true]);
@@ -135,6 +137,7 @@ class AuthController extends Controller
             ]);
         }
 
+        GameController::setHash($userBD);
         Auth::login($userBD, true);
 
         return redirect('/');
