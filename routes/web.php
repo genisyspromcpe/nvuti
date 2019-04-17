@@ -20,4 +20,8 @@ Route::group(['prefix' => '/auth'], function () {
     Route::get('/vk/callback', 'AuthController@vkCallback');
 });
 
+Route::group(['middleware' => 'auth'], function () {
+    Route::post('/bet', 'GameController@bet');
+});
+
 Route::get('/logout', 'AuthController@logout');
