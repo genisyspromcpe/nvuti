@@ -12,3 +12,12 @@
 */
 
 Route::get('/', 'PagesController@index');
+
+Route::group(['prefix' => '/auth'], function () {
+    Route::post('/registration', 'AuthController@registration');
+    Route::post('/login', 'AuthController@login');
+    Route::get('/vk', 'AuthController@authVK');
+    Route::get('/vk/callback', 'AuthController@vkCallback');
+});
+
+Route::get('/logout', 'AuthController@logout');

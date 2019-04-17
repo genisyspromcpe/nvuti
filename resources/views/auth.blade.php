@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <meta name="csrf-token" content="gwzH6PrylzvKG0t0iMHboOrOxnDkmsvST1ddNmQs">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Nvuti - Официальный сайт. Нвути сервис мгновенных игр.</title>
     <link rel="stylesheet" type="text/css" href="./files/css.css">
     <link rel="stylesheet" type="text/css" href="./files/bootstrap.min.css">
@@ -307,7 +307,7 @@
                                                     <form class="form-horizontal">
                                                         <div style="    margin-top: -22px;"
                                                              class="card-body pt-0 text-center">
-                                                            <center><a style="color:#3B5998" href="/login"
+                                                            <center><a style="color:#3B5998" href="/auth/vk"
                                                                        class="btn btn-social mb-1 mr-1 btn-outline-facebook"><span
                                                                             class="fa fa-vk"></span> <span class="px-1">Войти через ВК</span>
                                                                 </a></center>
@@ -385,9 +385,11 @@
                                                                 return $('#error_enter').html('Введите пароль');
                                                             }
 
+                                                            const _token = $("input[name='_token']").val();
+
                                                             $.ajax({
                                                                 type: 'POST',
-                                                                url: '/action',
+                                                                url: '/auth/login',
                                                                 beforeSend: function () {
                                                                     $('#error_enter').css('display', 'none');
                                                                     $('#loader').css('position', '');
@@ -397,14 +399,12 @@
                                                                     $('#text_enter').css('display', 'none');
                                                                 },
                                                                 data: {
-                                                                    type: "login",
+                                                                    _token: _token,
                                                                     login: $('#userLogin').val(),
-                                                                    rc: $('#g-recaptcha-response').val(),
                                                                     pass: $('#userPass').val(),
                                                                 },
-                                                                success: function (data) {
+                                                                success: function (obj) {
 
-                                                                    var obj = jQuery.parseJSON(data);
                                                                     if ('success' in obj) {
                                                                         window.location.href = '';
                                                                         // return false;
@@ -441,6 +441,7 @@
                                             <div class="card-body collapse in">
                                                 <div class="card-block">
                                                     <form class="form-horizontal">
+                                                        @csrf
                                                         <fieldset class="form-group position-relative has-icon-left">
                                                             <input type="text"
                                                                    class="form-control form-control-md input-md"
@@ -469,7 +470,7 @@
                                                             <div class="g-recaptcha-response-1"
                                                                  style="text-align: center;">
                                                                 <div class="g-recaptcha" id="g-recaptcha-response-1"
-                                                                     data-sitekey="6LeyK30UAAAAAMxL0JiQ4hTYX1RtANTok6ragpl8"></div>
+                                                                     data-sitekey="6Lf4xp4UAAAAADeYU_ymgJdfCXctSC9CJnMGg0Ie"></div>
                                                             </div>
                                                             <div class="form-control-position">
                                                                 <i class="ft-lock"></i>
@@ -606,7 +607,7 @@
                                                             };
 
                                                             function register1() {
-                                                                if ($('#userLoginRegister').val().length < 4) {
+                                                                if ($('#userLoginRegister').val().length < 4 || $('#userLoginRegister').val().length > 15) {
                                                                     $('#error_register').css('display', 'block');
                                                                     return $('#error_register').html('Логин от 4 до 15 символов');
                                                                 }
@@ -635,9 +636,11 @@
                                                                     return $('#error_register').html('Согласитесь с правилами');
                                                                 }
 
+                                                                const _token = $("input[name='_token']").val();
+
                                                                 $.ajax({
                                                                     type: 'POST',
-                                                                    url: '/action',
+                                                                    url: '/auth/registration',
                                                                     beforeSend: function () {
                                                                         $('#error_register').css('display', 'none');
                                                                         $('#loader_register').css('position', '');
@@ -647,18 +650,17 @@
 
                                                                     },
                                                                     data: {
-                                                                        type: "register",
+                                                                        _token: _token,
                                                                         login: $('#userLoginRegister').val(),
                                                                         rc: $('#g-recaptcha-response').val(),
                                                                         pass: $('#userPassRegister').val(),
                                                                         email: $('#userEmailRegister').val(),
                                                                         ref: Cookies.get('ref')
                                                                     },
-                                                                    success: function (data) {
+                                                                    success: function (obj) {
                                                                         $('#enter_but').css('pointer-events', '');
 
 
-                                                                        var obj = jQuery.parseJSON(data);
                                                                         if ('success' in obj) {
 
                                                                             document.location.href = '';
@@ -1752,9 +1754,7 @@
                     <div class="card-body collapse in">
                         <div class="card-block">
                             <div class="card-text">
-                                <h6>Для связи с администрацией используйте <a href="/cdn-cgi/l/email-protection"
-                                                                              class="__cf_email__"
-                                                                              data-cfemail="7d0e080d0d120f093d4c130b080914530f08">[email&#160;protected]</a>
+                                <h6>Для связи с администрацией используйте <a href="mailto:toxanutiy@gmail.com">toxanutiy@gmail.com</a>
                                     или пишите в сообщество Вконтакте</h6>
                             </div>
                         </div>
@@ -1921,7 +1921,6 @@
     </div>
 </noindex>
 <noindex>
-
     <div class="modal fade text-xs-left in" id="large" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17"
          style="display: none; ">
         <div class="modal-dialog modal-lg" role="document">
