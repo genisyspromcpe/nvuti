@@ -116,7 +116,6 @@
     <script src="./files/jquery-latest.min.js"></script>
     <script src="./files/socket.io-1.4.5.js"></script>
     <script>
-
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -128,7 +127,6 @@
             $('#MinRange').html(Math.floor(($('#BetPercent').val() / 100) * 999999));
             $('#MaxRange').html(999999 - Math.floor(($('#BetPercent').val() / 100) * 999999));
             $('#BetProfit').html(((100 / $('#BetPercent').val()) * $('#BetSize').val()).toFixed(2));
-
         });
     </script>
     <script src="https://www.google.com/recaptcha/api.js?onload=renderRecaptchas&render=explicit" async defer></script>
@@ -347,7 +345,7 @@
                                                                     class="odometer-digit-inner"><span
                                                                         class="odometer-ribbon"><span
                                                                             class="odometer-ribbon-inner"><span
-                                                                                class="odometer-value">0</span></span></span></span></span></div>
+                                                                                class="odometer-value">{{$u->balance}}</span></span></span></span></span></div>
 												</span>
                                             N
                                         </h3>
@@ -452,7 +450,7 @@
                                                 </div>
                                                 <center style="word-wrap:break-word;padding-bottom:5px">
                                                     <b id="hashBet">
-                                                        abaa2736d99ca707c08d070fad653ad2dd5bf852cc7548c0bf986c51a4c6af826658e46c64838b344c30c640f84b7be2ec86474e010d8aea7f8a9d90808c4efe </b>
+                                                        {{ json_decode($u->game)->hash }}</b>
                                                     <div id="loader_hash" style="position:relative;display:none">
                                                         <div id="dot-container_hash">
                                                             <div id="left-dot_hash" class="black-dot"></div>
@@ -482,6 +480,7 @@
                                             <div class="row text-xs-center" style="padding-top:10px">
                                                 <div class="col-md-6 col-xs-6">
                                                     <div class="form-group">
+                                                        @csrf
                                                         <span style="-webkit-user-select: none;-moz-user-select: none;"
                                                               class="blue-grey darken-1 ">0 - <span
                                                                     id="MinRange">499999</span></span>
@@ -1997,6 +1996,7 @@
     }
 </script>
 <script type="text/javascript">
+    const _token = $("input[name='_token']").val();
     function bet(type) {
 
         if ($('#userBalance').html() < $('#BetSize').val()) {
@@ -2009,7 +2009,7 @@
         }
         $.ajax({
             type: 'POST',
-            url: '/action',
+            url: '/bet',
             beforeSend: function () {
                 $('#checkBet').css('display', 'none');
                 $('#error_bet').css('display', 'none')
@@ -2019,30 +2019,22 @@
                 $('#buttonMin').css('pointer-events', 'none');
             },
             data: {
+                _token: _token,
                 type: type,
                 hash: $.trim($('#hashBet').html()),
                 betSize: $('#BetSize').val(),
                 betPercent: $('#BetPercent').val(),
             },
-            success: function (data) {
+            success: function (obj) {
                 $('#buttonMax').css('pointer-events', '');
                 $('#buttonMin').css('pointer-events', '');
                 $('#betLoad').css('display', 'none');
-                var obj = jQuery.parseJSON(data);
                 if ('success' in obj) {
                     $('#checkBet').css('display', '');
 
                     $('#checkBet').attr('href', 'game/?id=' + obj.success.check_bet);
 
-
-                    socket.emit('newDrop', obj.success.check_bet);
-
-
                     if (obj.success.type == 'win') {
-                        // var audio = new Audio();
-                        // audio.src = 'Coin.mp3';
-                        // audio.volume = 0.6;
-                        // audio.autoplay = true;
                         $('#succes_bet').css('display', '');
                         $("#succes_bet").html("Выиграли <b>" + obj.success.profit + " </b> N");
                     }
