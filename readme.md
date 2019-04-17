@@ -5,7 +5,6 @@
 <p>Написан на:</p>
    <ul>
         <li>Laravel 5.8</li>
-        <li>AngularJS</li>
         <li>NodeJS</li>
    </ul>
 <p>Базы данных:</p>
