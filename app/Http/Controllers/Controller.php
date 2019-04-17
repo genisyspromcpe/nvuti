@@ -16,10 +16,12 @@ class Controller extends BaseController
 
     protected $user;
     protected $redis;
+    protected $config;
 
     public function __construct()
     {
         $this->redis = Redis::connection();
+        $this->config = Config::find(1);
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
             view()->share('u', $this->user);
