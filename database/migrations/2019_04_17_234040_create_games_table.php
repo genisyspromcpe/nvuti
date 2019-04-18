@@ -17,6 +17,7 @@ class CreateGamesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->string('betType');
+            $table->integer('betPercent');
             $table->integer('win_number');
             $table->integer('bet');
             $table->integer('win');
