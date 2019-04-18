@@ -15,9 +15,6 @@ class CreateConfigTable extends Migration
     {
         Schema::create('config', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->double('profit', 8,2);
-            $table->double('need_profit', 8,2);
-            $table->integer('chance_win');
             $table->timestamps();
         });
     }
