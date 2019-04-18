@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->nullable();
             $table->double('balance', 8,2)->default(0.00);
             $table->integer('vkId')->nullable();
+            $table->integer('ref')->nullable();
             $table->text('game')->nullable();
             $table->rememberToken();
             $table->timestamps();
