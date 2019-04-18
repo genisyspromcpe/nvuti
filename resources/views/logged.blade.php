@@ -1982,17 +1982,16 @@
         }
         $.ajax({
             type: 'POST',
-            url: 'action',
+            url: '/user/resetPass',
             beforeSend: function () {
                 $('#error_resetPass').hide();
                 $('#succes_resetPass').hide();
             },
             data: {
-                type: "resetPassPanel",
+                _token: _token,
                 newPass: $('#resetPass').val()
             },
-            success: function (data) {
-                var obj = jQuery.parseJSON(data);
+            success: function (obj) {
                 if ('success' in obj) {
                     $("#succes_resetPass").show();
                 } else {

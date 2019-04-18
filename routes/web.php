@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'user'], function () {
         Route::post('/getBonus', 'UserController@getBonus');
+        Route::post('/resetPass', 'UserController@resetPass');
     });
 });
 

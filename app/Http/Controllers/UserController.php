@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Validator;
 
 class UserController extends Controller
 {
@@ -36,6 +37,38 @@ class UserController extends Controller
 
         return response()->json([
             'success' => 1
+        ]);
+    }
+
+    public function resetPass(Request $r)
+    {
+        $validator = Validator::make($r->all(), [
+            'newPass' => 'required|min:5',
+        ]);
+
+        if ($validator->fails())
+        {
+            if (isset($validator->errors()->get('newPass')[0])) switch ($validator->errors()->get('newPass')[0])
+            {
+                case 'validation.required':
+                    return response()->json([
+                        'error' => 'Введите пароль'
+                    ]);
+                    break;
+                case 'validation.min.string':
+                    return response()->json([
+                        'error' => 'Мин. кол-во символов в пароле: 5'
+                    ]);
+                    break;
+            }
+        }
+
+        $this->user->update([
+            'password' => md5($r->newPass)
+        ]);
+
+        return response()->json([
+            'success' => true
         ]);
     }
 }
