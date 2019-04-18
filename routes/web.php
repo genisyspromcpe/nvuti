@@ -22,6 +22,10 @@ Route::group(['prefix' => '/auth'], function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::post('/bet', 'GameController@bet');
+
+    Route::group(['prefix' => 'user'], function () {
+        Route::post('/getBonus', 'UserController@getBonus');
+    });
 });
 
 Route::get('/logout', 'AuthController@logout');

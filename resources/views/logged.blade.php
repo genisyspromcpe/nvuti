@@ -300,14 +300,13 @@
 
                                 $.ajax({
                                     type: 'POST',
-                                    url: '/action',
-                                    data: {
-                                        type: "getBonus"
+                                    url: '/user/getBonus',
+                                    date: {
+                                        _token: _token
                                     },
-                                    success: function (data) {
-                                        var obj = jQuery.parseJSON(data);
+                                    success: function (obj) {
                                         if ('success' in obj) {
-                                            if (obj.success == 1) {
+                                            if (obj.success === 1) {
                                                 return location.href = "";
                                             }
                                         }
