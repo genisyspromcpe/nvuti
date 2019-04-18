@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'PagesController@index');
+Route::get('/game', 'PagesController@game');
 
 Route::group(['prefix' => '/auth'], function () {
     Route::post('/registration', 'AuthController@registration');
