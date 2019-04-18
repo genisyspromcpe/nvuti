@@ -1139,7 +1139,7 @@
                                                                                                 value="0"
                                                                                                 max="100"></progress></span>
                                         </td>
-                                        <td class="text-xs-center font-small-2"><span><progress style="margin-top:8px;"
+                                        <td class="text-xs-center font-smhttp://1nvuti.ru/?i={{$u->id}}all-2"><span><progress style="margin-top:8px;"
                                                                                                 class="progress progress-sm mb-0"
                                                                                                 value="0"
                                                                                                 max="100"></progress></span>
@@ -1484,7 +1484,7 @@
                             <div class="card">
                                 <div class="card-header" style="border-radius: 4px!important;">
                                     <h4 class="card-title "><b>Ваша реферальная ссылка: </b> <span
-                                                style="text-transform:none!important"> http://1nvuti.ru/?i=190775 </span>
+                                                style="text-transform:none!important"> http://1nvuti.ru/?i={{$u->id}} </span>
                                         <i id="sucCopy" style="display:none" class="ft-check"></i><i
                                                 onclick="$(this).hide();$('#sucCopy').show()"
                                                 class="ft-copy btn-clipboard"
