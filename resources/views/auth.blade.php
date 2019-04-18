@@ -407,7 +407,6 @@
 
                                                                     if ('success' in obj) {
                                                                         window.location.href = '';
-                                                                        // return false;
                                                                     } else {
                                                                         $('#enter_but').css('pointer-events', '');
                                                                         $('#loader').css('position', 'absolute');
