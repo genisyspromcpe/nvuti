@@ -43,17 +43,17 @@ class AuthController extends Controller
                     break;
                 case 'validation.min.string':
                     return response()->json([
-                        'error' => 'Минимальное кол-во символов в логине: 4'
+                        'error' => 'Мин. кол-во символов в логине: 4'
                     ]);
                     break;
                 case 'validation.max.string':
                     return response()->json([
-                        'error' => 'Максимальное кол-во символов в логине: 15'
+                        'error' => 'Макс. кол-во символов в логине: 15'
                     ]);
                     break;
                 case 'validation.unique':
                     return response()->json([
-                        'error' => 'Пользователь с данным логином уже зарегистрирован'
+                        'error' => 'Пользователь с данным логином уже есть'
                     ]);
                     break;
             }
@@ -66,7 +66,7 @@ class AuthController extends Controller
                     break;
                 case 'validation.min.string':
                     return response()->json([
-                        'error' => 'Минимальное кол-во символов в пароле: 5'
+                        'error' => 'Мин. кол-во символов в пароле: 5'
                     ]);
                     break;
             }
@@ -79,7 +79,7 @@ class AuthController extends Controller
                     break;
                 case 'validation.unique':
                     return response()->json([
-                        'error' => 'Пользователь с данной почтой уже зарегистрирован'
+                        'error' => 'Пользователь с данной почтой уже есть'
                     ]);
                     break;
                 case 'validation.email':
