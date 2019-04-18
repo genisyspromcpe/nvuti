@@ -91,10 +91,15 @@ class AuthController extends Controller
         }
         else
         {
+            $referred = null;
+
+            if ($r->session()->has('ref')) $referred = session('ref');
+
             $user = User::create([
                'username' => $r->login,
                'password' => md5($r->pass),
-               'email' => $r->email
+               'email' => $r->email,
+               'ref' => $referred
             ]);
 
             GameController::setHash($user);
@@ -130,10 +135,15 @@ class AuthController extends Controller
 
         if (!$userBD)
         {
+            $referred = null;
+
+            if ($r->session()->has('ref')) $referred = session('ref');
+
             $userBD = User::create([
                 'username' => $data['first_name'].' '.$data['last_name'],
                 'email' => $user->accessTokenResponseBody['email'],
-                'vkId' => $data['id']
+                'vkId' => $data['id'],
+                'ref' => $referred
             ]);
         }
 
