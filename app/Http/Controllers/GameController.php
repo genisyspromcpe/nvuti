@@ -51,82 +51,48 @@ class GameController extends Controller
             $gameBD->update([
                 'betType' => '0-'.$min
             ]);
-            if ($game->win_number > $min)
-            {
-                $gameBD->update([
-                    'win' => 0
-                ]);
-                return response()->json([
-                    'success' => [
-                        'check_bet' => $gameBD->id,
-                        'type' => 'lose',
-                        'number' => $game->win_number,
-                        'hash' => json_decode($this->user->game)->hash,
-                        'balance' => $this->user->balance + $bet,
-                        'new_balance' => $this->user->balance
-                    ]
-                ]);
-            }
-            else
-            {
-                $gameBD->update([
-                    'win' => $win
-                ]);
-                $this->user->update([
-                    'balance' => $this->user->balance + $win
-                ]);
-                return response()->json([
-                    'success' => [
-                        'check_bet' => $gameBD->id,
-                        'type' => 'win',
-                        'profit' => $win,
-                        'hash' => json_decode($this->user->game)->hash,
-                        'balance' => $this->user->balance + $bet,
-                        'new_balance' => $this->user->balance
-                    ]
-                ]);
-            }
         }
-        else if ($type == 'betMax')
+        else
         {
             $gameBD->update([
                 'betType' => $max.'-999999'
             ]);
-            if ($game->win_number < $max)
-            {
-                $gameBD->update([
-                    'win' => 0
-                ]);
-                return response()->json([
-                    'success' => [
-                        'check_bet' => $gameBD->id,
-                        'type' => 'lose',
-                        'number' => $game->win_number,
-                        'hash' => json_decode($this->user->game)->hash,
-                        'balance' => $this->user->balance + $bet,
-                        'new_balance' => $this->user->balance
-                    ]
-                ]);
-            }
-            else
-            {
-                $gameBD->update([
-                    'win' => $win
-                ]);
-                $this->user->update([
-                    'balance' => $this->user->balance + $win
-                ]);
-                return response()->json([
-                    'success' => [
-                        'check_bet' => $gameBD->id,
-                        'type' => 'win',
-                        'profit' => $win,
-                        'hash' => json_decode($this->user->game)->hash,
-                        'balance' => $this->user->balance + $bet,
-                        'new_balance' => $this->user->balance
-                    ]
-                ]);
-            }
+        }
+
+        if ( ($type == 'betMin' && $game->win_number <= $min) || ($type == 'betMax' && $game->win_number >= $max) )
+        {
+            $gameBD->update([
+                'win' => $win
+            ]);
+            $this->user->update([
+                'balance' => $this->user->balance + $win
+            ]);
+            return response()->json([
+                'success' => [
+                    'check_bet' => $gameBD->id,
+                    'type' => 'win',
+                    'profit' => $win,
+                    'hash' => json_decode($this->user->game)->hash,
+                    'balance' => $this->user->balance + $bet,
+                    'new_balance' => $this->user->balance
+                ]
+            ]);
+        }
+        else
+        {
+            $gameBD->update([
+                'win' => 0
+            ]);
+            return response()->json([
+                'success' => [
+                    'check_bet' => $gameBD->id,
+                    'type' => 'lose',
+                    'number' => $game->win_number,
+                    'hash' => json_decode($this->user->game)->hash,
+                    'balance' => $this->user->balance + $bet,
+                    'new_balance' => $this->user->balance
+                ]
+            ]);
         }
     }
 
