@@ -68,6 +68,7 @@ class GameController extends Controller
             $this->user->update([
                 'balance' => $this->user->balance + $win
             ]);
+            $this->redis->publish('new_game', json_encode(['game' => view('includes.game', compact('gameBD'))->render()]));
             return response()->json([
                 'success' => [
                     'check_bet' => $gameBD->id,
@@ -84,6 +85,7 @@ class GameController extends Controller
             $gameBD->update([
                 'win' => 0
             ]);
+            $this->redis->publish('new_game', json_encode(['game' => view('includes.game', compact('gameBD'))->render()]));
             return response()->json([
                 'success' => [
                     'check_bet' => $gameBD->id,

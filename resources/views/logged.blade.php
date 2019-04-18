@@ -147,6 +147,11 @@
         socket.on('updateOnline', (online) => {
             $('#oe').text(online);
         });
+
+        socket.on('new_game', (game) => {
+            $("#response").prepend(game);
+            $('#response').children().slice(20).remove();
+        });
     </script>
 
 </head>
