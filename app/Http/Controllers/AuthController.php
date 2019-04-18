@@ -93,7 +93,11 @@ class AuthController extends Controller
         {
             $referred = null;
 
-            if ($r->session()->has('ref')) $referred = session('ref');
+            if ($r->session()->has('ref'))
+            {
+                $userReferred = User::where('id', session('ref'))->first();
+                if ($userReferred) $referred = session('ref');
+            }
 
             $user = User::create([
                'username' => $r->login,
@@ -137,7 +141,11 @@ class AuthController extends Controller
         {
             $referred = null;
 
-            if ($r->session()->has('ref')) $referred = session('ref');
+            if ($r->session()->has('ref'))
+            {
+                $userReferred = User::where('id', session('ref'))->first();
+                if ($userReferred) $referred = session('ref');
+            }
 
             $userBD = User::create([
                 'username' => $data['first_name'].' '.$data['last_name'],
