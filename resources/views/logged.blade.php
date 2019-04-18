@@ -21,6 +21,16 @@
     <link rel="stylesheet" type="text/css" href="./files/horizontal-menu.min.css">
     <link rel="stylesheet" type="text/css" href="./files/vertical-overlay-menu.min.css">
     <link rel="stylesheet" type="text/css" href="./files/style.css">
+    <script src="./files/vendors.min.js" type="text/javascript"></script>
+    <script src="./files/clipboard.js" type="text/javascript"></script>
+    <script src="./files/popover.min.js" type="text/javascript"></script>
+    <script src="./files/raphael-min.js" type="text/javascript"></script>
+    <script src="./files/morris.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="./files/palette-climacon.css">
+    <link rel="stylesheet" type="text/css" href="./files/style.min(1).css">
+    <script src="./files/app-menu.min.js" type="text/javascript"></script>
+    <script src="./files/app.min.js" type="text/javascript"></script>
+    <script src="./files/odometer.js"></script>
     <style>
         .tag-default:hover {
             background-color: #626f7f !important;
@@ -1139,7 +1149,7 @@
                                                                                                 value="0"
                                                                                                 max="100"></progress></span>
                                         </td>
-                                        <td class="text-xs-center font-smhttp://1nvuti.ru/?i={{$u->id}}all-2"><span><progress style="margin-top:8px;"
+                                        <td class="text-xs-center font-small-2"><span><progress style="margin-top:8px;"
                                                                                                 class="progress progress-sm mb-0"
                                                                                                 value="0"
                                                                                                 max="100"></progress></span>
@@ -1488,7 +1498,7 @@
                                         <i id="sucCopy" style="display:none" class="ft-check"></i><i
                                                 onclick="$(this).hide();$('#sucCopy').show()"
                                                 class="ft-copy btn-clipboard"
-                                                data-clipboard-text="https://1nvuti.ru/?i=" style="cursor:pointer"
+                                                data-clipboard-text="https://1nvuti.ru/?i={{$u->id}}" style="cursor:pointer"
                                                 data-toggle="tooltip" data-placement="top" title=""
                                                 data-original-title="Скопировать ссылку"></i></h4></div>
                                 <div class="card-header">
@@ -2286,6 +2296,8 @@
     }
 </script>
 <script>
+    new ClipboardJS('.btn-clipboard');
+
     function sfs() {
         var date = new Date();
         var minutes = 60;
@@ -2296,14 +2308,5 @@
         $("#fsi").hide();
     }
 </script>
-<script src="./files/vendors.min.js" type="text/javascript"></script>
-<script src="./files/popover.min.js" type="text/javascript"></script>
-<script src="./files/raphael-min.js" type="text/javascript"></script>
-<script src="./files/morris.min.js" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="./files/palette-climacon.css">
-<link rel="stylesheet" type="text/css" href="./files/style.min(1).css">
-<script src="./files/app-menu.min.js" type="text/javascript"></script>
-<script src="./files/app.min.js" type="text/javascript"></script>
-<script src="./files/odometer.js"></script>
 </body>
 </html>
