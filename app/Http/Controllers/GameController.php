@@ -39,6 +39,7 @@ class GameController extends Controller
 
         $gameBD = Game::create([
             'user_id' => $this->user->id,
+            'betPercent' => $percent,
             'betType' => 0,
             'win_number' => $game->win_number,
             'bet' => $bet,
