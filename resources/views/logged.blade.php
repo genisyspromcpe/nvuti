@@ -945,10 +945,6 @@
                 </div>
                 <script>
                     function deposit() {
-                        if ($('#systemPay').val() > 3 || !$.isNumeric($('#systemPay').val())) {
-                            $('#error_deposit').show();
-                            return $('#error_deposit').html('Укажите систему пополнения');
-                        }
                         if ($('#depositSize').val() == '') {
                             $('#error_deposit').show();
                             return $('#error_deposit').html('Введите сумму');
@@ -965,21 +961,16 @@
                         }
                         $.ajax({
                             type: 'POST',
-                            url: '/action',
+                            url: '/user/deposit',
                             data: {
-                                type: "deposit",
-                                system: $('#systemPay').val(),
                                 size: $('#depositSize').val()
                             },
                             beforeSend: function (data) {
                                 $('#depositLoad').show();
                                 $('#depositButton').addClass('disabled');
                             },
-                            success: function (data) {
-                                var obj = jQuery.parseJSON(data);
+                            success: function (obj) {
                                 if ('success' in obj) {
-                                    // $('#depositButton').removeClass('disabled');
-                                    // $('#depositLoad').hide();
                                     window.location.href = obj.success.location;
                                 }
 
@@ -987,7 +978,6 @@
                                     $('#error_deposit').show();
                                     return $('#error_deposit').html(obj.error.text);
                                 }
-
                             }
                         });
 
@@ -1096,9 +1086,45 @@
                             </tr>
                             </thead>
                             <tbody id="withdrawT">
-                            <tr>
-                                <td id="emptyHistory" colspan="4" class="text-xs-center">История пуста</td>
-                            </tr>
+                                @forelse(\App\Withdraw::where('user_id', $u->id)->get() as $w)
+                                    <tr style="cursor:default" id="{{$w->id}}_his">
+                                        <td>
+                                            @if($w->status == 0)
+                                                <i class="ft-x" style="color:red;cursor:pointer;margin-left: -18px;" onclick="removeWithdraw({{$w->id}})"></i>
+                                            @endif
+                                            {{$w->created_at}}
+                                        </td>
+                                        <td>
+                                            <?php
+                                            if($w->system == 1) { $img = '/files/ya.png'; }
+                                            elseif($w->system == 2) { $img = '/files/payeer.png'; }
+                                            elseif($w->system == 3) { $img = '/files/wm.png'; }
+                                            elseif($w->system == 4) { $img = '/files/qiwi.png'; }
+                                            elseif($w->system == 5) { $img = '/files/beeline.png'; }
+                                            elseif($w->system == 6) { $img = '/files/megafon.png'; }
+                                            elseif($w->system == 7) { $img = '/files/mts.png'; }
+                                            elseif($w->system == 8) { $img = '/files/tele.png'; }
+                                            elseif($w->system == 9) { $img = '/files/visa.png'; }
+                                            elseif($w->system == 10) { $img = '/files/mc.png'; }
+                                            ?>
+                                            <img src="{{$img}}"> {{$w->number}}
+                                        </td>
+                                        <td>{{$w->sum}} N</td>
+                                        <td>
+                                            @if($w->status == 0)
+                                                <div class="tag tag-warning">Ожидание</div>
+                                            @elseif($w->status == 1)
+                                                <div class="tag tag-success">Выполнено</div>
+                                            @elseif($w->status == 2)
+                                                <div class="tag tag-danger">Отменено</div>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td id="emptyHistory" colspan="4" class="text-xs-center">История пуста</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -1431,13 +1457,12 @@
     function removeWithdraw(id) {
         $.ajax({
             type: 'POST',
-            url: 'action',
+            url: '/user/removeWithdraw',
             data: {
-                type: "removeWithdraw",
+                _token: _token,
                 id: id
             },
-            success: function (data) {
-                var obj = jQuery.parseJSON(data);
+            success: function (obj) {
                 if ('success' in obj) {
                     $('#' + id + '_his').hide();
                     updateBalance(obj.success.balance, obj.success.new_balance);
@@ -1460,7 +1485,7 @@
         }
         $.ajax({
             type: 'POST',
-            url: 'action',
+            url: '/user/withdraw',
             beforeSend: function () {
                 $('#withdrawB').html('');
                 $('#error_withdraw').hide();
@@ -1468,18 +1493,15 @@
                 $('#loader').css('display', '');
             },
             data: {
-                type: "withdraw",
+                _token: _token,
                 system: $('#hide_search').val(),
                 size: $('#WithdrawSize').val(),
                 wallet: $('#walletNumber').val()
             },
-            success: function (data) {
-
-
+            success: function (obj) {
                 $('#withdrawB').html('Выплата');
 
                 $('#loader').css('display', 'none');
-                var obj = jQuery.parseJSON(data);
                 if ('success' in obj) {
                     $('#emptyHistory').hide();
                     $('#succes_withdraw').show();
@@ -1568,45 +1590,6 @@
 
         od.update(end);
     }
-
-    function updateHash() {
-        $.ajax({
-            type: 'POST',
-            url: 'action',
-            beforeSend: function () {
-                $('#checkBet').css('display', 'none');
-                $('#loader_hash').css('display', '');
-                $('#betStart').css('opacity', '0.25');
-                $('#controlBet').css('opacity', '0.25');
-                $('#betStart').css('pointer-events', 'none');
-                $('#controlBet').css('pointer-events', 'none');
-                $('#hashBet').html('');
-            },
-            data: {
-                type: "updateHash",
-                hid: $('#hashBet').attr('hid'),
-            },
-            success: function (data) {
-
-                var obj = jQuery.parseJSON(data);
-                if ('success' in obj) {
-                    $('#checkBet').css('display', '');
-                    $('#checkBet').attr('href', 'bet?id=' + obj.success.check_bet);
-                    $('#hashBet').attr('hid', obj.success.hid);
-                    $('#hashBet').html(obj.success.hash);
-                    $('#loader_hash').css('display', 'none');
-                    $('#betStart').css('opacity', '');
-                    $('#controlBet').css('opacity', '');
-                    $('#betStart').css('pointer-events', '');
-                    $('#controlBet').css('pointer-events', '');
-                }
-                sss();
-                if ('error' in obj) {
-                    return document.location.href = '';
-                }
-            }
-        });
-    }
 </script>
 
 <script>
@@ -1619,16 +1602,6 @@
 </script>
 <script>
     new ClipboardJS('.btn-clipboard');
-
-    function sfs() {
-        var date = new Date();
-        var minutes = 60;
-        date.setTime(date.getTime() + (minutes * 60 * 1000));
-
-
-        Cookies.set('fss', '1', {expires: date});
-        $("#fsi").hide();
-    }
 </script>
 </body>
 </html>

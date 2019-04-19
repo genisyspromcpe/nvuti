@@ -27,6 +27,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'user'], function () {
         Route::post('/getBonus', 'UserController@getBonus');
         Route::post('/resetPass', 'UserController@resetPass');
+        Route::post('/deposit', 'UserController@deposit');
+        Route::post('/withdraw', 'UserController@withdraw');
+        Route::post('/removeWithdraw', 'UserController@removeWithdraw');
     });
 });
 
