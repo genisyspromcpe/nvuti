@@ -791,7 +791,6 @@
                                             <td>{{$wallet}}</td>
                                         </tr>
                                     @endforeach
-                                    
                                     </tbody>
                                 </table>
                             </div>
