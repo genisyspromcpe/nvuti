@@ -13,16 +13,22 @@ redisClient.on("message", (channel, message) => {
     }
 });
 
-let online = 0;
+let settings = {
+    online: 0
+};
 
 io.on('connection', (socket) => {
 
-    io.sockets.emit('updateOnline', online++);
+    updateOnline();
 
     socket.on('disconnect', () => {
-        io.sockets.emit('updateOnline', online--);
+        updateOnline();
     });
 });
+
+const updateOnline = () => {
+    io.sockets.emit('updateOnline', Number(Object.keys(io.sockets.adapter.rooms).length) + settings.online);
+};
 
 http.listen(8443, () => {
     console.log('Прослушивается через порт *:8443');
