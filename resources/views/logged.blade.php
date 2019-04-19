@@ -825,10 +825,6 @@
                                                 data-clipboard-text="https://1nvuti.ru/?i={{$u->id}}" style="cursor:pointer"
                                                 data-toggle="tooltip" data-placement="top" title=""
                                                 data-original-title="Скопировать ссылку"></i></h4></div>
-                                <div class="card-header">
-                                    Выплаты производятся в <a href="https://vk.com/nvutiwork" target="blank">группе
-                                        ВК</a>
-                                </div>
                                 <div class="card-body collapse in">
                                     <div class="card-block card-dashboard">
                                         Получайте 50% с каждого пополнения баланса реферала
@@ -841,12 +837,23 @@
                                                 <th></th>
                                                 <th></th>
                                                 <th class="text-xs-center">Дата</th>
-                                                <th class="text-xs-center">Пользователь (Всего: 0)</th>
-                                                <th class="text-xs-center">Принес (Всего: P)</th>
+                                                <th class="text-xs-center">Пользователь (Всего: {{count($referralsP)}})</th>
+                                                <th class="text-xs-center">Принес (Всего: {{$allSum}}P)</th>
                                                 <th></th>
                                                 <th></th>
                                             </tr>
 
+                                            @foreach($referralsP as $refer)
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-xs-center">{{$refer['user']->updated_at}}</td>
+                                                    <td class="text-xs-center">{{$refer['user']->username}}</td>
+                                                    <td class="text-xs-center">{{$refer['sum']}}</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            @endforeach
 
                                             </thead>
                                             <tbody></tbody>
