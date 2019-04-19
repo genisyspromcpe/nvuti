@@ -1042,26 +1042,27 @@
                                     </thead>
                                     <tbody>
 
-                                    <tr style="cursor:default!important">
-                                        <td>139820</td>
-                                        <td>1200 P</td>
-                                        <td><img src="/files/qiwi.png"/></td>
-                                        <td>+7904643****</td>
-                                    </tr>
-
-                                    <tr style="cursor:default!important">
-                                        <td>139855</td>
-                                        <td>1109 P</td>
-                                        <td><img src="/files/payeer.png"/></td>
-                                        <td>P1348****</td>
-                                    </tr>
-
-                                    <tr style="cursor:default!important">
-                                        <td>142051</td>
-                                        <td>1745 P</td>
-                                        <td><img src="/files/payeer.png"/></td>
-                                        <td>P8005****</td>
-                                    </tr>
+                                    @foreach (\App\Withdraw::orderBy('id', 'desc')->limit(20)->get() as $w)
+                                        <?php
+                                        if($w->system == 1) { $img = '/files/ya.png'; }
+                                        elseif($w->system == 2) { $img = '/files/payeer.png'; }
+                                        elseif($w->system == 3) { $img = '/files/wm.png'; }
+                                        elseif($w->system == 4) { $img = '/files/qiwi.png'; }
+                                        elseif($w->system == 5) { $img = '/files/beeline.png'; }
+                                        elseif($w->system == 6) { $img = '/files/megafon.png'; }
+                                        elseif($w->system == 7) { $img = '/files/mts.png'; }
+                                        elseif($w->system == 8) { $img = '/files/tele.png'; }
+                                        elseif($w->system == 9) { $img = '/files/visa.png'; }
+                                        elseif($w->system == 10) { $img = '/files/mc.png'; }
+                                        $wallet = substr_replace($w->number, '****', -4);
+                                        ?>
+                                        <tr style="cursor:default!important">
+                                            <td>{{$w->user_id}}</td>
+                                            <td>{{$w->sum}} P</td>
+                                            <td><img src="{{$img}}"/></td>
+                                            <td>{{$wallet}}</td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
