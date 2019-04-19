@@ -25,10 +25,10 @@ class PagesController extends Controller
             foreach ($referrals as $refer)
             {
                 $payments = Payment::where('user_id', $refer->id)->where('status', 1)->sum('sum');
-                $allSum += $payments / 2;
+                $allSum += $payments * (50 / 100);
                 $referralsP[] = [
                     'user' => $refer,
-                    'sum' => $payments / 2
+                    'sum' => $payments * (50 / 100)
                 ];
             }
             return view('logged', compact('referralsP', 'allSum'));
